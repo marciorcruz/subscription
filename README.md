@@ -13,4 +13,9 @@ Provider Sepolia
 0xd3fa55cb81FDFEBf8c239F83598e1958B0995b7D
 
 
+####
+https://gist.github.com/marciorcruz/f357100cd70c275430a54d6ac9da3801#file-contracts-subscription-sol
+
+https://gist.github.com/marciorcruz/f357100cd70c275430a54d6ac9da3801#file-contracts-paymenttoken-sol
+
 
