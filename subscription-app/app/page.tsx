@@ -15,7 +15,7 @@ export default function Home() {
     const { subscriptionServiceContract, tokenContract } = await Provider();
 
     try {      // Obter a quantidade necessária de tokens para a duração selecionada
-      const teste = await subscriptionServiceContract.initialPrice();
+      const initialPrice = await subscriptionServiceContract.initialPrice();
       const depositAmount = selectedDuration * 1000000000000000000;
       // Aprovar a transferência de tokens do usuário para o contrato SubscriptionService
       const transactionAproove = await tokenContract.approve("0xd3fa55cb81FDFEBf8c239F83598e1958B0995b7D", depositAmount.toString());
@@ -30,10 +30,29 @@ export default function Home() {
     }
   }
 
+  const handleIncreaseSubscription = async () => {
+    const { subscriptionServiceContract, tokenContract } = await Provider();
+
+    try {      // Obter a quantidade necessária de tokens para a duração selecionada
+      const initialPrice = await subscriptionServiceContract.initialPrice();
+      const depositAmount = selectedDuration * 1000000000000000000;
+      // Aprovar a transferência de tokens do usuário para o contrato SubscriptionService
+      const transactionAproove = await tokenContract.approve("0xd3fa55cb81FDFEBf8c239F83598e1958B0995b7D", depositAmount.toString());
+      await transactionAproove.wait();
+      // Chamar a função startSubscription do contrato SubscriptionService
+      const transaction = await subscriptionServiceContract.increaseSubscription(selectedDuration);
+      // Aguarde a confirmação da transação
+      await transaction.wait();
+      console.log('Subscription started successfully', transaction.hash);
+    } catch (error) {
+      console.error('Error starting subscription:', error);
+    }
+  }
+
   const handleCancelSubscription = async () => {
     const { subscriptionServiceContract, tokenContract } = await Provider();
 
-    try {     
+    try {
       const transaction = await subscriptionServiceContract.cancelSubscription();
       // Aguarde a confirmação da transação
       await transaction.wait();
@@ -72,6 +91,7 @@ export default function Home() {
       </div>
       <button onClick={handleStartSubscription}>Start Subscription</button>
       <button onClick={handleCancelSubscription}>Cancel Subscription</button>
+      <button onClick={handleIncreaseSubscription}>Increase Subscription</button>
     </main>
   )
 }
